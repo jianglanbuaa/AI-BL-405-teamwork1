@@ -9,7 +9,7 @@
 ## `IdentifyRules.txt`
 用来存储识别规则
 例如：  
-```IF (canine teeth) IF (paws) IF (binocular vision) THEN [carnivore]```
+```IF (canine teeth) IF (paws) IF (binocular vision) THEN [carnivore]```  
 中，IF后紧跟的内容是判断依据，其中小括号`(x)`代表特征`x`，中括号`[y]`代表特征`y`。
 ## `AnimalIdentify.py`
 主函数，实现识别
