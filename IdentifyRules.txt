@@ -1,2 +1,2 @@
-1 IF (hair) THEN [mammal]
-2 IF (canine teeth) IF (paws) IF (binocular vision) THEN [carnivore]
+IF (hair) THEN [mammal]
+IF (canine teeth) IF (paws) IF (binocular vision) THEN [carnivore]
