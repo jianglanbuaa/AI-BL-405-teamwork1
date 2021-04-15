@@ -4,6 +4,7 @@ class Animal:
         self._name = name
         self._features = features
         self._labels = labels
+        self._message = None
 
     def get_name(self):
         return self._name
@@ -46,3 +47,14 @@ class Animal:
     
     def has_label(self, label):
         return label in self._labels
+    
+    def record(self, message):
+        if self._message is None:
+            self._message = message
+        else:
+            self._message += message
+
+    def __str__(self):
+        if self.get_name() == "":
+            return f'The animal name was not successfully identified.\nfeatures:\t{self.get_features()}\nlabels:\t{self.get_labels()}\n\nmessage:{self._message}\n\n'
+        return f'Successfully identified.\nname:\t{self.get_name()}\nfeatures:\t{self.get_features()}\nlabels:\t{self.get_labels()}\n\nmessage:{self._message}\n\n'
