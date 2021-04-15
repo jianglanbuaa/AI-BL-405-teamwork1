@@ -1,2 +1,15 @@
 IF (hair) THEN [mammal]
-IF (canine teeth) IF (paws) IF (binocular vision) THEN [carnivore]
+IF (breast milk) THEN [mammal]
+IF (feather) THEN [bird]
+IF (capable of flying) (lay eggs) THEN [bird]
+IF (carnivorous) THEN [carnivore]
+IF (canine teeth) (paws) (binocular vision) THEN [carnivore]
+IF [mammal] (hoof) THEN [ungulate]
+IF [mammal] [chew ruminant] THEN [ungulate]
+IF [mammal] [carnivore] (yellowish brown) (dark spots) THEN {leopard}
+IF [mammal] [carnivore] (yellowish brown) (black stripe) THEN {tiger}
+IF [ungulate] (long neck) (long legs) (dark spots) THEN {giraffe}
+IF [ungulate] (black stripe) THEN {zebra}
+IF [bird] (long neck) (long legs) (incapable of flying) THEN {ostrich}
+IF [bird] (swim) (black and white) (incapable of flying) THEN {penguin}
+IF [bird] (skilled in flying) THEN {albatross}
