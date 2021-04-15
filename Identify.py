@@ -70,3 +70,4 @@ class Identify:
                 IF_statement = [feature for feature in Rule['IF_feature']] + [label for label in Rule['IF_label']]
                 self._Animal.record(f'{IF_statement} -> {name}\n')
                 break
+
