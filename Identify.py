@@ -1,42 +1,53 @@
-import re
+from Rules import Rules
 
 
 class Identify:
     ''' 根据规则识别动物 '''
+
     def __init__(self, Animal):
         self._Animal = Animal
-        self._rulespath = 'IdentifyRules.txt'
-        self._Rulelist = self.rules_translate()
+        rules = Rules()
+        self._Rulelist = rules.get_rules()
         ''' Rulelist中的元素为 dic，其中包含一条规则的信息
-        键包括：'IF_feature'，'IF_label'，'THEN_feature'，'THEN_label'
+        键包括：'IF_feature'，'IF_label', 'THEN_feature'，'THEN_label', 'THEN_name'
         值为相对应的信息列表
         '''
-    
-    def rules_translate(self):
-        ''' 读取IdentifyRules.txt进行规则读取 '''
-        with open(self._rulespath, 'r', encoding='utf-8') as lines:
-            Rulelist = []
+        self.judge()  # 根据规则对 Animal 的 feature 和 label 进行更新
+        self.identify()  # 识别动物
 
-            for line in lines:
-                split_by_THEN = re.split(line, stirng='THEN')
-                IF_statement = split_by_THEN.pop(0).strip()  # split_by_THEN的第一个元素是IF语句段
-                split_by_IF = re.split(IF_statement, stirng='IF')
+    def judge(self):
+        '''根据规则对 Animal 的 feature 和 label 进行递归更新'''
+        features = self._Animal.get_features()
+        labels = self._Animal.get_labels()
 
-                dic = {}
-                # IF_feature代表IF语句中的feature判断，其余同
-                for statement in split_by_IF:
-                    IF_feature = re.findall(re.compile(r'[(](.*?)[)]'), statement)
-                    IF_label = re.findall(re.compile(r'[\[](.*?)[\]]'), statement)
-                for statement in split_by_THEN:
-                    THEN_feature = re.findall(re.compile(r'[(](.*?)[)]'), statement)
-                    THEN_label = re.findall(re.compile(r'[\[](.*?)[\]]'), statement)
-                dic['IF_feature'] = IF_feature
-                dic['IF_label'] = IF_label
-                dic['THEN_feature'] = THEN_feature
-                dic['THEN_label'] = THEN_label
+        RECURSE = False
+        for Rule in self._Rulelist:
+            if Rule['THEN_name'] != []:  # 如果是识别语句，则跳过
+                continue
 
-                Rulelist.append(dic)
+            MATCH = True
+            for IF_feature in Rule['IF_feature']:
+                if IF_feature not in features:
+                    MATCH = False
+            for IF_label in Rule['IF_label']:
+                if IF_label not in labels:
+                    MATCH = False
+            if MATCH:
+                for THEN_feature in Rule['THEN_feature']:
+                    if THEN_feature not in self._Animal.get_features():
+                        self._Animal.append_feature(THEN_feature)
+                        IF_statement = [feature for feature in Rule['IF_feature']] + [label for label in Rule['IF_label']]
+                        self._Animal.record(f'{IF_statement} -> {THEN_feature}\n')
+                        RECURSE = True
+                for THEN_label in Rule['THEN_label']:
+                    if THEN_label not in self._Animal.get_labels():
+                        self._Animal.append_label(THEN_label)
+                        IF_statement = [feature for feature in Rule['IF_feature']] + [label for label in Rule['IF_label']]
+                        self._Animal.record(f'{IF_statement} -> {THEN_label}\n')
+                        RECURSE = True
+        if RECURSE:  # 如果Animal的状态有更新，则递归
+            self.judge()
 
-        return(Rulelist)
-
-
+    def identify(self):
+        '''根据规则识别 Animal '''
+        pass
