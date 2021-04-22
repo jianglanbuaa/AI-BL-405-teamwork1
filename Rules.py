@@ -1,4 +1,5 @@
 import re
+from Database import Database
 RULESPATH = 'IdentifyRules.txt'
 
 
@@ -7,6 +8,7 @@ class Rules:
     def __init__(self, rulespath=RULESPATH):
         self._rulespath = RULESPATH
         self._rules = self.read_rules()
+        self._DB = Database()
 
     def get_rules(self):
         return self._rules
@@ -39,10 +41,24 @@ class Rules:
 
         return(Rulelist)
     
-    def add_rules(self):
-        with open(self._rulespath, 'r', encoding='utf-8') as lines:
-            pass
+    def add_rules(self, IF_feature, IF_label, THEN_feature, THEN_label, THEN_name):
+        with open(self._rulespath, 'a+', encoding='utf-8') as lines:
+            rule = "IF"
+            for IF_feature in IF_feature:
+                rule += f" ({IF_feature}) "
+            for IF_label in IF_label:
+                rule += f" ({IF_label}) "
+            rule += "THEN"
+            for THEN_feature in IF_feature:
+                rule += f"({IF_feature})"
+            for IF_feature in IF_feature:
+                rule += f"({IF_feature})"
+            for THEN_name in THEN_name:
+                rule += " {" + THEN_name + "} "
+            rule = rule[:-1] + '\n'
+            lines.write(rule)
+            self._DB.log(f"add rules : {rule}")
 
     def delete_rules(self):
-        with open(self._rulespath, 'r', encoding='utf-8') as lines:
+        with open(self._rulespath, 'r', encoding='utf-8'):
             pass

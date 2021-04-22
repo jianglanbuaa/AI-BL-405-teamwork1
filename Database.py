@@ -1,12 +1,16 @@
+import time
+
 nameDB = ['leopard', 'tiger', 'giraffe', 'zebra', 'ostrich', 'penguin', 'albatross']
-featureDB = ['hair', 'breast milk', 'feather', 'capable of flying', 'incapable of flying', 'skilled in flying', 'lay eggs', 'carnivorous', 'canine teeth', 'paws', 'binocular vision', 'hoof', 'yellowish brown', 'dark spots', 'black stripe', 'long neck', 'black stripe', 'long legs', 'swim', 'black and white']
+featureDB = ['hair', 'breast milk', 'feather', 'capable of flying', 'incapable of flying', 'skilled in flying', 'lay eggs',
+             'carnivorous', 'canine teeth', 'paws', 'binocular vision', 'hoof', 'yellowish brown', 'dark spots', 'black stripe',
+             'long neck', 'black stripe', 'long legs', 'swim', 'black and white']
 labelDB = ['mammal', 'bird', 'carnivore', 'ungulate']
 
 DB = dict(nameDB=nameDB, featureDB=featureDB, labelDB=labelDB)
 
 
 class Database:
-    '''综合数据库，实现增删改查'''
+    '''综合数据库，实现增删改查；记录日志文件'''
     def __init__(self, DB=DB):
         self._DB = DB
     
@@ -29,5 +33,8 @@ class Database:
             DB[DB.index(item1)] = item2
         else:
             print('item does not exist!')
-    
-        
+
+    def log(self, msg):
+        with open("log.txt", "a+", encoding='utf-8') as lines:
+            now = time.strftime("%Y-%m-%d [%H:%M:%S]")
+            lines.write(f'[{now}]' + msg)

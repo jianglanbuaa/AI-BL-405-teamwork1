@@ -16,7 +16,8 @@
 ## `Rules.py`
 读入`IdentifyRules.txt`的规则并进行判断。  
 包含`class Rules`用来读取，修改规则。  
-## `database`
+## `Database.py`
 综合数据库
+实现增删改查操作的同时，记录日志文件
 
 ---

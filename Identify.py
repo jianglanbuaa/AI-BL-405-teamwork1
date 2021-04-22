@@ -1,4 +1,5 @@
 from Rules import Rules
+from Database import Database
 
 
 class Identify:
@@ -8,6 +9,7 @@ class Identify:
         self._Animal = Animal
         rules = Rules()
         self._Rulelist = rules.get_rules()
+        self._DB = Database()
         ''' Rulelist中的元素为 dic，其中包含一条规则的信息
         键包括：'IF_feature'，'IF_label', 'THEN_feature'，'THEN_label', 'THEN_name'
         值为相对应的信息列表
@@ -38,12 +40,14 @@ class Identify:
                         self._Animal.append_feature(THEN_feature)
                         IF_statement = [feature for feature in Rule['IF_feature']] + [label for label in Rule['IF_label']]
                         self._Animal.record(f'{IF_statement} -> {THEN_feature}\n')
+                        self._DB.log(f'{IF_statement} -> {THEN_feature}\n')
                         RECURSE = True
                 for THEN_label in Rule['THEN_label']:
                     if THEN_label not in self._Animal.get_labels():
                         self._Animal.append_label(THEN_label)
                         IF_statement = [feature for feature in Rule['IF_feature']] + [label for label in Rule['IF_label']]
                         self._Animal.record(f'{IF_statement} -> {THEN_label}\n')
+                        self._DB.log(f'{IF_statement} -> {THEN_label}\n')
                         RECURSE = True
         if RECURSE:  # 如果Animal的状态有更新，则递归
             self.judge()
@@ -61,13 +65,15 @@ class Identify:
             for IF_feature in Rule['IF_feature']:
                 if IF_feature not in features:
                     MATCH = False
+                    break
             for IF_label in Rule['IF_label']:
                 if IF_label not in labels:
                     MATCH = False
+                    break
             if MATCH:
                 name = Rule['THEN_name'][0]
                 self._Animal.update_name(name)
                 IF_statement = [feature for feature in Rule['IF_feature']] + [label for label in Rule['IF_label']]
                 self._Animal.record(f'{IF_statement} -> {name}\n')
+                self._DB.log(f'{IF_statement} -> {name}\n')
                 break
-
